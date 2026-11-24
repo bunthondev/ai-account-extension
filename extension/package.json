@@ -1,0 +1,195 @@
+{
+  "name": "antigravity-subagent",
+  "displayName": "Multi-Account AI",
+  "description": "Multi-Account AI manager for Google Gemini, Anthropic Claude, and OpenAI with OAuth 2.0, instant account switching, live quota & usage dashboard, TUI terminal, and MCP integration for Antigravity IDE.",
+  "version": "0.1.0",
+  "publisher": "luma",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "AI",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "antigravity",
+    "gemini",
+    "claude",
+    "openai",
+    "multi-account",
+    "oauth",
+    "usage",
+    "quota",
+    "mcp",
+    "subagent"
+  ],
+  "icon": "media/icon.png",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "subagent-accounts",
+          "title": "AI Accounts",
+          "icon": "media/sidebar-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "subagent-accounts": [
+        {
+          "id": "subagent.accountsView",
+          "name": "Configured Accounts"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "subagent.viewUsage",
+        "title": "Multi-Account AI: View AI Quotas & Usage",
+        "category": "Multi-Account AI",
+        "icon": "$(graph)"
+      },
+      {
+        "command": "subagent.switchAccount",
+        "title": "Multi-Account AI: Switch Active Account",
+        "category": "Multi-Account AI"
+      },
+      {
+        "command": "subagent.webSignIn",
+        "title": "Multi-Account AI: Web Sign-In (Google OAuth 2.0 / API Keys)",
+        "category": "Multi-Account AI",
+        "icon": "$(globe)"
+      },
+      {
+        "command": "subagent.launchTui",
+        "title": "Multi-Account AI: Open TUI Terminal Dashboard",
+        "category": "Multi-Account AI",
+        "icon": "$(terminal)"
+      },
+      {
+        "command": "subagent.addAccount",
+        "title": "Multi-Account AI: Add Account Profile",
+        "category": "Multi-Account AI",
+        "icon": "$(add)"
+      },
+      {
+        "command": "subagent.deleteAccount",
+        "title": "Multi-Account AI: Delete Account Profile",
+        "category": "Multi-Account AI"
+      },
+      {
+        "command": "subagent.refreshAccounts",
+        "title": "Multi-Account AI: Refresh Accounts",
+        "category": "Multi-Account AI",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "subagent.configureMcp",
+        "title": "Multi-Account AI: Sync MCP Server in Antigravity IDE",
+        "category": "Multi-Account AI"
+      },
+      {
+        "command": "subagent.reloadAgent",
+        "title": "Multi-Account AI: Reload Antigravity Window & Agent",
+        "category": "Multi-Account AI"
+      },
+      {
+        "command": "subagent.activateAccountItem",
+        "title": "Activate Account",
+        "icon": "$(check)"
+      },
+      {
+        "command": "subagent.deleteAccountItem",
+        "title": "Delete Account",
+        "icon": "$(trash)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "subagent.viewUsage",
+          "when": "view == subagent.accountsView",
+          "group": "navigation@1"
+        },
+        {
+          "command": "subagent.refreshAccounts",
+          "when": "view == subagent.accountsView",
+          "group": "navigation@2"
+        },
+        {
+          "command": "subagent.addAccount",
+          "when": "view == subagent.accountsView",
+          "group": "navigation@3"
+        },
+        {
+          "command": "subagent.webSignIn",
+          "when": "view == subagent.accountsView",
+          "group": "navigation@4"
+        },
+        {
+          "command": "subagent.launchTui",
+          "when": "view == subagent.accountsView",
+          "group": "navigation@5"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "subagent.activateAccountItem",
+          "when": "view == subagent.accountsView && viewItem == account-inactive",
+          "group": "inline@1"
+        },
+        {
+          "command": "subagent.deleteAccountItem",
+          "when": "view == subagent.accountsView && (viewItem == account-active || viewItem == account-inactive)",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Multi-Account AI",
+      "properties": {
+        "subagent.binaryPath": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path to the subagent binary. If empty, the extension auto-locates the binary."
+        },
+        "subagent.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the active AI account in the Antigravity IDE status bar."
+        },
+        "subagent.showQuotaStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show AI quota and remaining credits in the status bar."
+        },
+        "subagent.webAuthPort": {
+          "type": "number",
+          "default": 8085,
+          "description": "Port used for the Google OAuth 2.0 and Web Sign-In portal."
+        },
+        "subagent.autoSyncMcp": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically register and keep the subagent MCP server configured in Antigravity IDE."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node build.mjs",
+    "package": "npx @vscode/vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/vscode": "^1.75.0",
+    "@vscode/vsce": "^2.22.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.7.0"
+  }
+}

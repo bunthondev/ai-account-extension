@@ -1,0 +1,9 @@
+{
+  "name": "subagent-workspace",
+  "private": true,
+  "scripts": {
+    "build:ext": "cd extension && npm run build",
+    "package:ext": "cd extension && npm run package",
+    "install:ext": "cd extension && npm run build && npm run package && \"/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide\" --install-extension antigravity-subagent-0.1.0.vsix --force"
+  }
+}
